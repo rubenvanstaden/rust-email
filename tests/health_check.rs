@@ -1,4 +1,5 @@
 use std::net::TcpListener;
+use rust_email::startup::run;
 
 fn spawn_app() -> String {
 
@@ -6,7 +7,7 @@ fn spawn_app() -> String {
     // We retrieve the port assigned to us by the OS
     let port = listener.local_addr().unwrap().port();
 
-    let server = rust_email::run(listener).expect("Failed to bind address");
+    let server = run(listener).expect("Failed to bind address");
     let _ = tokio::spawn(server);
 
     // We return the application address to the caller!
