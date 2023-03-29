@@ -1,8 +1,8 @@
 use rust_email::config::{get_configuration, DatabaseSettings};
 use rust_email::startup::run;
 use sqlx::{Connection, Executor, PgConnection, PgPool};
-use uuid::Uuid;
 use std::net::TcpListener;
+use uuid::Uuid;
 
 pub struct TestApp {
     pub address: String,
@@ -10,7 +10,6 @@ pub struct TestApp {
 }
 
 async fn spawn_app() -> TestApp {
-
     let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind random port");
     // We retrieve the port assigned to us by the OS
     let port = listener.local_addr().unwrap().port();
@@ -20,9 +19,8 @@ async fn spawn_app() -> TestApp {
     config.database.database_name = Uuid::new_v4().to_string();
 
     let connection_pool = configure_database(&config.database).await;
-    
-    let server = run(listener, connection_pool.clone())
-        .expect("Failed to bind address");
+
+    let server = run(listener, connection_pool.clone()).expect("Failed to bind address");
     let _ = tokio::spawn(server);
 
     TestApp {
@@ -56,7 +54,6 @@ pub async fn configure_database(config: &DatabaseSettings) -> PgPool {
 
 #[tokio::test]
 async fn health_check_works() {
-
     let app = spawn_app().await;
     let client = reqwest::Client::new();
 
@@ -72,7 +69,6 @@ async fn health_check_works() {
 
 #[tokio::test]
 async fn subscribe_returns_a_200_for_valid_form_data() {
-
     let app = spawn_app().await;
     let client = reqwest::Client::new();
 
@@ -98,7 +94,6 @@ async fn subscribe_returns_a_200_for_valid_form_data() {
 
 #[tokio::test]
 async fn subscribe_returns_a_400_when_data_is_missing() {
-
     let app = spawn_app().await;
     let client = reqwest::Client::new();
 
