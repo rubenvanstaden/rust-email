@@ -7,6 +7,8 @@ edition = "2021"
 path = "src/lib.rs"
 
 [dependencies]
+uuid = { version = "1", features = ["v4"] }
+chrono = "0.4.15"
 config = "0.13"
 reqwest = "0.11"
 actix-web = "4"
