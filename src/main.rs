@@ -1,6 +1,7 @@
 use rust_email::config::get_configuration;
 use rust_email::startup::run;
 use rust_email::telemetry::{get_subscriber, init_subscriber};
+use secrecy::ExposeSecret;
 use sqlx::PgPool;
 use std::net::TcpListener;
 
@@ -13,7 +14,7 @@ async fn main() -> std::io::Result<()> {
     let configuration = get_configuration().expect("Failed to read configuration.");
     // We have removed the hard-coded `8000` - it's now coming from our settings!
 
-    let connection = PgPool::connect(&configuration.database.connection_string())
+    let connection = PgPool::connect(&configuration.database.connection_string().expose_secret())
         .await
         .expect("Failed to connect to Postgres.");
 
